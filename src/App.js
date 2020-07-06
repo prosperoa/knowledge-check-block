@@ -9,7 +9,7 @@ function App() {
       <h1>Knowledge Check Block</h1>
       <Row style={{ padding: "1rem 0 1rem 0" }}>
         {mockData.map((data, i) => (
-          <Col lg={4} style={{ margin: "1rem 0" }}>
+          <Col key={i} lg={4} style={{ margin: "1rem 0" }}>
             <CheckBlock
               text={<p>{data.text}</p>}
               media={data.media}
