@@ -9,7 +9,7 @@ export default [
     message: "I just love cookies and a warm cup of coffee!",
   },
   {
-    text: "How much code did he write",
+    text: "How much code did he write?",
     media: "https://www.youtube.com/embed/WWggmC8kYZc",
     mediaType: "video",
     answers: [
@@ -23,7 +23,7 @@ export default [
   },
   {
     text:
-      "The Answer to the Ultimate Question of Life, the Universe, and Everything is ____",
+      "The Answer to the Ultimate Question of Life, the Universe, and Everything is _______?",
     answers: ["Success", "Everything", "42", "Clean code"],
     correctAnswer: 2,
     message: "The answer to everything is 42.",
