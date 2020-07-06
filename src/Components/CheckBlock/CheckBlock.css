@@ -1,0 +1,35 @@
+.checkBlock {
+  padding: 2rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  box-shadow: 0 0.4rem 1.2rem 0.2rem rgba(0, 0, 0, 0.05);
+  color: black;
+  transition: 0.3s;
+}
+
+.checkBlock .answers {
+  border-top: 1px solid #ececec;
+  padding-top: 1rem;
+  margin: 1rem 0 1rem 0;
+}
+
+.checkBlock .answers .list-group-item {
+  cursor: pointer;
+  border: none;
+}
+
+.checkBlock .answers .list-group-item:hover {
+  background: #ececec;
+}
+
+.checkBlock .answers .active {
+  color: #000;
+  background: #ececec;
+  border-color: #ececec;
+}
+
+.checkBlock .submit {
+  border-radius: 2rem;
+  width: 100%;
+}
