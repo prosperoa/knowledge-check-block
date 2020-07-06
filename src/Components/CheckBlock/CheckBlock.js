@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { ListGroup, Button, Collapse, Fade, Image } from "react-bootstrap";
-import Zoom from "react-medium-image-zoom";
-import "react-medium-image-zoom/dist/styles.css";
+import { ListGroup, Button, Collapse, Fade } from "react-bootstrap";
+import Media from "./Media";
 import "./CheckBlock.css";
 
 function CheckBlock(props) {
@@ -33,42 +32,11 @@ function CheckBlock(props) {
     setShowFeedback(false);
   };
 
-  const renderMedia = () => {
-    let mediaComponent;
-
-    switch (props.mediaType) {
-      case "image":
-        mediaComponent = (
-          <Zoom>
-            <Image src={props.media} alt="CheckBlock" fluid />
-          </Zoom>
-        );
-        break;
-      case "video":
-        mediaComponent = (
-          <iframe
-            title={props.text}
-            src={props.media}
-            height="100%"
-            width="100%"
-            frameBorder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        );
-        break;
-      default:
-        return;
-    }
-
-    return mediaComponent;
-  };
-
   return (
     <>
       <div className="checkBlock">
         {props.text}
-        {props.media && renderMedia()}
+        <Media src={props.media} mediaType={props.mediaType} />
         <div className="answers">
           <ListGroup>
             {props.answers.map((answer, i) => (
