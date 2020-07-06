@@ -7,6 +7,32 @@ import "./CheckBlock.css";
 
 function CheckBlock(props) {
   const [selectedAnswer, setAnswer] = useState("");
+  const [quizOver, setQuizState] = useState(false);
+
+  const onSubmit = () => {
+    setQuizState(true);
+  };
+
+  const setAnswerStyles = (answerIndex, correctAnswerIndex) => {
+    const styles = {
+      backgroundColor: "#fff",
+      border: "none",
+    };
+
+    if (answerIndex === selectedAnswer) {
+      styles.border = "2px solid #000";
+    }
+
+    if (quizOver) {
+      if (answerIndex === correctAnswerIndex) {
+        styles.backgroundColor = "#b1ffb1";
+      } else {
+        styles.backgroundColor = "#ffc4c4";
+      }
+    }
+
+    return styles;
+  };
 
   return (
     <>
@@ -20,8 +46,9 @@ function CheckBlock(props) {
             {props.answers.map((answer, i) => (
               <ListGroup.Item
                 key={i}
-                onClick={() => setAnswer(answer)}
-                active={selectedAnswer === answer}
+                onClick={() => setAnswer(i)}
+                active={!quizOver && selectedAnswer === i}
+                style={quizOver ? setAnswerStyles(i, props.correctAnswer) : {}}
               >
                 {answer}
               </ListGroup.Item>
@@ -29,7 +56,7 @@ function CheckBlock(props) {
           </ListGroup>
         </div>
         <div className="text-center">
-          <Button type="submit" className="submit" variant="secondary">
+          <Button className="submit" variant="secondary" onClick={onSubmit}>
             submit
           </Button>
         </div>
