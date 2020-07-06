@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { ListGroup, Button, Collapse, Fade } from "react-bootstrap";
+import { ListGroup, Button, Collapse, Fade, Image } from "react-bootstrap";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import "./CheckBlock.css";
@@ -10,7 +10,7 @@ function CheckBlock(props) {
   const [quizOver, setQuizOver] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
 
-  const getClassName = (answerIndex, correctAnswerIndex) => {
+  const getClassName = (answerIndex) => {
     let className = "";
 
     if (quizOver) {
@@ -18,7 +18,7 @@ function CheckBlock(props) {
         className += "selected";
       }
 
-      if (answerIndex === correctAnswerIndex) {
+      if (answerIndex === props.correctAnswer) {
         className += " correct";
       } else {
         className += " incorrect";
@@ -33,19 +33,48 @@ function CheckBlock(props) {
     setShowFeedback(false);
   };
 
+  const renderMedia = () => {
+    let mediaComponent;
+
+    switch (props.mediaType) {
+      case "image":
+        mediaComponent = (
+          <Zoom>
+            <Image src={props.media} alt="CheckBlock" fluid />
+          </Zoom>
+        );
+        break;
+      case "video":
+        mediaComponent = (
+          <iframe
+            title={props.text}
+            src={props.media}
+            height="100%"
+            width="100%"
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        );
+        break;
+      default:
+        return;
+    }
+
+    return mediaComponent;
+  };
+
   return (
     <>
       <div className="checkBlock">
         {props.text}
-        {props.media && (
-          <Zoom style={{ cursor: "zoom-in" }}>{props.media}</Zoom>
-        )}
+        {props.media && renderMedia()}
         <div className="answers">
           <ListGroup>
             {props.answers.map((answer, i) => (
               <ListGroup.Item
                 key={i}
-                className={getClassName(i, props.correctAnswer)}
+                className={getClassName(i)}
                 active={!quizOver && selectedAnswer === i}
                 onClick={() => setAnswer(i)}
               >
@@ -99,7 +128,8 @@ function CheckBlock(props) {
 
 CheckBlock.propTypes = {
   text: PropTypes.element.isRequired,
-  media: PropTypes.element,
+  media: PropTypes.string,
+  mediaType: PropTypes.oneOf(["image", "video"]),
   answers: PropTypes.arrayOf(PropTypes.string).isRequired,
   correctAnswer: PropTypes.number.isRequired,
   message: PropTypes.string,
