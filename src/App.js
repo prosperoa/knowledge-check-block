@@ -19,6 +19,7 @@ function App() {
               }
               answers={data.answers}
               correctAnswer={data.correctAnswer}
+              message={data.message}
             />
           </Col>
         ))}

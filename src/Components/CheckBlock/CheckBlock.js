@@ -1,37 +1,36 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, ListGroup, Button } from "react-bootstrap";
+import { ListGroup, Button, Collapse, Fade } from "react-bootstrap";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import "./CheckBlock.css";
 
 function CheckBlock(props) {
-  const [selectedAnswer, setAnswer] = useState("");
-  const [quizOver, setQuizState] = useState(false);
+  const [selectedAnswer, setAnswer] = useState(null);
+  const [quizOver, setQuizOver] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
-  const onSubmit = () => {
-    setQuizState(true);
-  };
-
-  const setAnswerStyles = (answerIndex, correctAnswerIndex) => {
-    const styles = {
-      backgroundColor: "#fff",
-      border: "none",
-    };
-
-    if (answerIndex === selectedAnswer) {
-      styles.border = "2px solid #000";
-    }
+  const getClassName = (answerIndex, correctAnswerIndex) => {
+    let className = "";
 
     if (quizOver) {
+      if (answerIndex === selectedAnswer) {
+        className += "selected";
+      }
+
       if (answerIndex === correctAnswerIndex) {
-        styles.backgroundColor = "#b1ffb1";
+        className += " correct";
       } else {
-        styles.backgroundColor = "#ffc4c4";
+        className += " incorrect";
       }
     }
 
-    return styles;
+    return className;
+  };
+
+  const onTakeQuizAgain = () => {
+    setQuizOver(false);
+    setShowFeedback(false);
   };
 
   return (
@@ -46,19 +45,52 @@ function CheckBlock(props) {
             {props.answers.map((answer, i) => (
               <ListGroup.Item
                 key={i}
-                onClick={() => setAnswer(i)}
+                className={getClassName(i, props.correctAnswer)}
                 active={!quizOver && selectedAnswer === i}
-                style={quizOver ? setAnswerStyles(i, props.correctAnswer) : {}}
+                onClick={() => setAnswer(i)}
               >
                 {answer}
               </ListGroup.Item>
             ))}
           </ListGroup>
         </div>
+        <Collapse in={showFeedback} timeout={3000} unmountOnExit={true}>
+          <div className="feedback">
+            <p>
+              <b>
+                {selectedAnswer === props.correctAnswer
+                  ? "correct"
+                  : "incorrect"}
+              </b>
+            </p>
+            {props.message && <p className="text-muted">{props.message}</p>}
+          </div>
+        </Collapse>
         <div className="text-center">
-          <Button className="submit" variant="secondary" onClick={onSubmit}>
-            submit
-          </Button>
+          <Fade
+            in={!quizOver}
+            unmountOnExit={true}
+            timeout={3000}
+            onExited={() => setShowFeedback(true)}
+          >
+            <Button
+              variant="secondary"
+              onClick={() => setQuizOver(true)}
+              disabled={selectedAnswer === null}
+            >
+              submit
+            </Button>
+          </Fade>
+          <Fade
+            in={showFeedback}
+            unmountOnExit={true}
+            timeout={3000}
+            onExited={onTakeQuizAgain}
+          >
+            <Button variant="dark" onClick={onTakeQuizAgain}>
+              take again
+            </Button>
+          </Fade>
         </div>
       </div>
     </>
@@ -70,6 +102,7 @@ CheckBlock.propTypes = {
   media: PropTypes.element,
   answers: PropTypes.arrayOf(PropTypes.string).isRequired,
   correctAnswer: PropTypes.number.isRequired,
+  message: PropTypes.string,
 };
 
 export default CheckBlock;

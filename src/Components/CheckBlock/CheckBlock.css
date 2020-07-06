@@ -30,7 +30,31 @@
   border-color: #ececec;
 }
 
-.checkBlock .submit {
+.checkBlock .answers .correct {
+  background-color: #b1ffb1;
+  border: none;
+  pointer-events: none;
+}
+
+.checkBlock .answers .incorrect {
+  background-color: #ffc4c4;
+  border: none;
+  pointer-events: none;
+}
+
+.checkBlock .answers .selected {
+  border: 2px solid #000;
+}
+
+.checkBlock button {
   border-radius: 2rem;
   width: 100%;
+  transition: 0.3s;
+}
+
+.checkBlock .feedback {
+  background-color: #ececec;
+  padding: 1rem 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
